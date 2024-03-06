@@ -3,9 +3,9 @@ package com.example.walmartcodingtest.presentation
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.walmartcodingtest.databinding.ActivityMainBinding
 import com.example.walmartcodingtest.presentation.viewmodel.CountriesViewModel
 import com.example.walmartcodingtest.presentation.viewmodel.CountriesViewModelFactory
@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         viewModel = CountriesViewModelFactory().create(CountriesViewModel::class.java)
         setContentView(binding.root)
-        initViews()
+        initRecyclerView()
         initObservers()
         viewModel.getCountriesList()
     }
@@ -31,11 +31,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initViews() {
+    private fun initRecyclerView() {
         countryAdapter = CountryAdapter()
         binding.rvCountries.apply {
             adapter = countryAdapter
-            // if device is in landscape mode use grid layout
+            (adapter as RecyclerView.Adapter).stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
             layoutManager = if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
                 LinearLayoutManager(context)
             } else GridLayoutManager(context, 2)
