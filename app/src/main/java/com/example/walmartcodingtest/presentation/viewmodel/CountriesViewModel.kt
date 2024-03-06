@@ -32,7 +32,7 @@ class CountriesViewModel(
     fun getCountryByName(countryName: String?) {
         countryName?.let { name ->
             viewModelScope.launch(Dispatchers.Default) {
-                _countriesState.value?.filter { it.name == name }?.let { country ->
+                _countriesState.value?.filter { it.name.startsWith(countryName) }?.let { country ->
                     _selectedCountryState.postValue(country)
                 }
             }
