@@ -3,13 +3,11 @@ package com.example.walmartcodingtest.presentation
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.walmartcodingtest.databinding.ActivityMainBinding
-import com.example.walmartcodingtest.domain.models.Country
 import com.example.walmartcodingtest.presentation.viewmodel.CountriesViewModel
 import com.example.walmartcodingtest.presentation.viewmodel.CountriesViewModelFactory
 
@@ -55,7 +53,7 @@ class MainActivity : AppCompatActivity() {
                 if (query.isNullOrBlank()) {
                     countryAdapter.setData(viewModel.countriesState.value)
                 } else {
-                    viewModel.getCountryByName(query)
+                    viewModel.filterCountriesByName(query)
                 }
                 return false
             }
@@ -64,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                 if (newText.isNullOrBlank()) {
                     countryAdapter.setData(viewModel.countriesState.value)
                 } else {
-                    viewModel.getCountryByName(newText)
+                    viewModel.filterCountriesByName(newText)
                 }
                 return true
             }

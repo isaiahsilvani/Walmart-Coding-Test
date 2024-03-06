@@ -29,7 +29,7 @@ class CountriesViewModel(
         }
     }
 
-    fun getCountryByName(countryName: String?) {
+    fun filterCountriesByName(countryName: String?) {
         countryName?.let { name ->
             viewModelScope.launch(Dispatchers.Default) {
                 _countriesState.value?.filter { it.name.startsWith(countryName) }?.let { country ->
