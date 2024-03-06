@@ -1,8 +1,10 @@
 package com.example.walmartcodingtest.presentation
 
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.walmartcodingtest.databinding.ActivityMainBinding
 import com.example.walmartcodingtest.presentation.viewmodel.CountriesViewModel
@@ -33,7 +35,10 @@ class MainActivity : AppCompatActivity() {
         countryAdapter = CountryAdapter()
         binding.rvCountries.apply {
             adapter = countryAdapter
-            layoutManager = LinearLayoutManager(context)
+            // if device is in landscape mode use grid layout
+            layoutManager = if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                LinearLayoutManager(context)
+            } else GridLayoutManager(context, 2)
         }
     }
 
