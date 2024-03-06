@@ -13,7 +13,6 @@ class CountriesViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CountriesViewModel::class.java)) {
             val getCountries = GetCountries(CountryRepoImpl(RetrofitProvider.getCountryApi()))
-            Log.i("TEST", "Isaiah - getCountries is null? ${getCountries == null}")
             return CountriesViewModel(getCountries) as T
         } else {
             throw IllegalArgumentException("Unknown ViewModel class: $modelClass")

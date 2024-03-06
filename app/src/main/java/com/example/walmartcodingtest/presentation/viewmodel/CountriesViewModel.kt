@@ -15,6 +15,9 @@ class CountriesViewModel(
     private val _countriesState = MutableLiveData<List<Country>>()
     val countriesState get() = _countriesState
 
+    private val _selectedCountryState = MutableLiveData<List<Country>>()
+    val selectedCountryState get() = _selectedCountryState
+
     /**
      * Method to fetch the countries from the API and post response to LiveData
      */
@@ -22,6 +25,16 @@ class CountriesViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             getCountries()?.let { countries ->
                 _countriesState.postValue(countries)
+            }
+        }
+    }
+
+    fun getCountryByName(countryName: String?) {
+        countryName?.let { name ->
+            viewModelScope.launch(Dispatchers.Default) {
+                _countriesState.value?.filter { it.name == name }?.let { country ->
+                    _selectedCountryState.postValue(country)
+                }
             }
         }
     }

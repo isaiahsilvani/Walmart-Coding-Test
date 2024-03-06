@@ -45,8 +45,16 @@ class CountryAdapter : RecyclerView.Adapter<CountryAdapter.CountryViewHolder>() 
     /**
      * Method to set the data and notify the adapter of the change
      */
-    fun setData(countries: List<Country>) {
-        data.addAll(countries)
+    fun setData(countries: List<Country>?) {
+        // remove data in order to display single country by using the same method
+        if (data.isNotEmpty()) {
+            val oldSize = data.size
+            data.clear()
+            notifyItemRangeRemoved(0, oldSize)
+        }
+        countries?.let {
+            data.addAll(it)
+        }
         notifyItemRangeChanged(0, data.size)
     }
 

@@ -3,10 +3,13 @@ package com.example.walmartcodingtest.presentation
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.walmartcodingtest.databinding.ActivityMainBinding
+import com.example.walmartcodingtest.domain.models.Country
 import com.example.walmartcodingtest.presentation.viewmodel.CountriesViewModel
 import com.example.walmartcodingtest.presentation.viewmodel.CountriesViewModelFactory
 
@@ -20,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         viewModel = CountriesViewModelFactory().create(CountriesViewModel::class.java)
         setContentView(binding.root)
+        initViews()
         initRecyclerView()
         initObservers()
         viewModel.getCountriesList()
@@ -28,6 +32,9 @@ class MainActivity : AppCompatActivity() {
     private fun initObservers() {
         viewModel.countriesState.observe(this) { countries ->
             countryAdapter.setData(countries)
+        }
+        viewModel.selectedCountryState.observe(this) { country ->
+            countryAdapter.setData(country)
         }
     }
 
@@ -40,6 +47,28 @@ class MainActivity : AppCompatActivity() {
                 LinearLayoutManager(context)
             } else GridLayoutManager(context, 2)
         }
+    }
+
+    private fun initViews() {
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query.isNullOrBlank()) {
+                    countryAdapter.setData(viewModel.countriesState.value)
+                } else {
+                    viewModel.getCountryByName(query)
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText.isNullOrBlank()) {
+                    countryAdapter.setData(viewModel.countriesState.value)
+                } else {
+                    viewModel.getCountryByName(newText)
+                }
+                return true
+            }
+        })
     }
 
 }
