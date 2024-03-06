@@ -32,7 +32,7 @@ class CountriesViewModel(
     fun filterCountriesByName(countryName: String?) {
         countryName?.let { name ->
             viewModelScope.launch(Dispatchers.Default) {
-                _countriesState.value?.filter { it.name.startsWith(countryName) }?.let { country ->
+                _countriesState.value?.filter { it.name.startsWith(name) }?.let { country ->
                     _selectedCountryState.postValue(country)
                 }
             }
